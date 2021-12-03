@@ -1,8 +1,5 @@
 package br.sp.senai.jandira.arquivo.ui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -10,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import br.sp.senai.jandira.arquivo.Arquivo;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -18,8 +16,13 @@ import java.awt.event.ActionEvent;
 public class FrameTeste extends JFrame {
 
 	private JPanel contentPane;
+	private Arquivo objArquivo;
+	private String caminho;
 
 	public FrameTeste() {
+		objArquivo = new Arquivo();
+		caminho = "C:\\Users\\21276327\\Desktop\\Teste\\aula.txt";
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 258, 288);
 		contentPane = new JPanel();
@@ -40,10 +43,6 @@ public class FrameTeste extends JFrame {
 		contentPane.add(textPane);
 		
 		JButton btnGravar = new JButton("Gravar");
-		btnGravar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnGravar.setBounds(20, 212, 89, 23);
 		contentPane.add(btnGravar);
 		
@@ -56,10 +55,16 @@ public class FrameTeste extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Arquivo objArquivo = new Arquivo();
-				String caminho = "C:\\Users\\21276327\\Desktop\\Teste\\aula.txt";
-				String texto = objArquivo.ler(caminho) + textPane.getText();
-				objArquivo.escrever(caminho, texto);
+				String textoArquivo = objArquivo.ler(caminho);
+				String texto = textoArquivo + textPane.getText();
+				
+				if(objArquivo.escrever(caminho, texto)) {
+					JOptionPane.showMessageDialog(null, "Dado gravado com sucesso! :)", "Sucessoo", JOptionPane.INFORMATION_MESSAGE);
+					textPane.setText("");
+				} else {
+					JOptionPane.showMessageDialog(null, "Não foi possível realizar a gravação! :(", "Erroo", JOptionPane.ERROR_MESSAGE);
+					textPane.setText("");
+				}
 				
 				textPane.setText("");
 			}
